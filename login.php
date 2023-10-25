@@ -37,6 +37,8 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             
             $_SESSION["user_id"] = $row['id'];
             $_SESSION["usuario_logado"] = true;
+            $_SESSION["admin"] = $row['admin'];
+
             header("Location: index1.php"); // Redirecionar para a página principal após o login
             exit();
         }else{
