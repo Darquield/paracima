@@ -7,43 +7,15 @@
     <link rel="stylesheet" type="text/css" href="style.css">
 </head>
 <body>
-    <header>
-        
-            <div id="logo">
-                <img src="./image/PK_white.png" alt="" width="100">
-    
-                <a href="#"><h1>Fórmula1Passionados</h1></a>
-            </div>
-            <div id="menu">
-                <nav>
-                <ul class="nav-list">
-                    <li >
-                        <a href="index1.php">Página Inicial</a>
-                    </li>
-                    <li >
-                        <a href="equipas.php">Equipas</a>
-                    </li>
-                    <li>
-                        <a href="pilotos.php">Pilotos</a>
-                    </li>
-                    <li >
-                        <a href="circuitos.php">Circuitos</a>
-                    </li>
-                    <li class="first current_page_item">
-                        <a href="Apostas.php">Apostas</a>
-                    </li>
-                    <li>
-                        <a href="perfil.php">Sair</a>
-                    </li>
-                </ul>
-                </nav>
-    </header>
+<?php
+include("headerafterlogin.php")
+?>
 
     <main>
         
         <section id="apostasCorrida">
             <h2>Apostas na Próxima Corrida</h2>
-            <form id="formApostas">
+            <form id="formApostas" method="POST" action="apostas_send.php">
                 <label for="pilotoEscolhido">Escolha seu piloto favorito:</label>
                 <select id="pilotoEscolhido" name="pilotoEscolhido">
                     <!-- Opções de pilotos -->
@@ -84,30 +56,6 @@
         
         </section>
 
-        <section id="votacaoPilotoMes">
-            <h2>Votação para Piloto do Mês</h2>
-            <p>Vote no seu piloto favorito deste mês:</p>
-            <ul>
-                <li>
-                    <label for="piloto1"><input type="radio" id="piloto1" name="votoPilotoMes" value="Piloto 1"> Piloto 1</label>
-                </li>
-                <li>
-                    <label for="piloto2"><input type="radio" id="piloto2" name="votoPilotoMes" value="Piloto 2"> Piloto 2</label>
-                </li>
-                <!-- Adicione mais pilotos para votação conforme necessário -->
-            </ul>
-            
-            <button>
-                
-    
-                <span class="circle1"></span>
-                <span class="circle2"></span>
-                <span class="circle3"></span>
-                <span class="circle4"></span>
-                <span class="circle5"></span>
-                <span class="text">Votar</span>
-           </button>
-        </section>
         <section id="noticiaComVideo">
             <div class="coluna-video">
                 <h2>Vídeo em Destaque</h2>
@@ -129,7 +77,9 @@
         
         
     </main>
+    
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
 <script>
     // Função para embaralhar aleatoriamente um array
     function shuffleArray(array) {
@@ -166,46 +116,66 @@
     // Embaralhe a ordem dos nomes dos pilotos
     shuffleArray(nomesPilotos);
 
-    // Dados de exemplo para o gráfico de barras
-    const dadosEstatisticas = {
-        labels: nomesPilotos,
-        datasets: [{
-            label: 'Número de Apostas',
-            data: nomesPilotos.map(() => Math.floor(Math.random() * 21)), // Números de 0 a 20 para cada piloto
-            backgroundColor: nomesPilotos.map(() => 'rgba(75, 192, 192, 0.2)'),
-            borderColor: nomesPilotos.map(() => 'rgba(75, 192, 192, 1)'),
-            borderWidth: 1,
-        }],
-    };
+    document.addEventListener("DOMContentLoaded", function() {
+        // Dados de exemplo para o gráfico de barras
+        const dadosEstatisticas = {
+            labels: [], // Nomes dos pilotos serão preenchidos dinamicamente
+            datasets: [{
+                label: 'Número de Apostas',
+                data: [], // Números de apostas serão preenchidos dinamicamente
+                backgroundColor: 'rgba(75, 192, 192, 0.2)',
+                borderColor: 'rgba(75, 192, 192, 1)',
+                borderWidth: 1,
+            }],
+        };
 
-    // Configuração do gráfico de barras
-    const configEstatisticas = {
-        type: 'bar',
-        data: dadosEstatisticas,
-        options: {
-            scales: {
-                y: {
-                    beginAtZero: true,
-                    title: {
-                        display: true,
-                        text: 'Número de Apostas',
+        // Configuração do gráfico de barras
+        const configEstatisticas = {
+            type: 'bar',
+            data: dadosEstatisticas,
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Número de Apostas',
+                        },
                     },
                 },
             },
-        },
-    };
+        };
 
-    // Crie um elemento canvas para o gráfico
-    const canvasEstatisticas = document.createElement('canvas');
-    canvasEstatisticas.id = 'graficoEstatisticas';
+        // Crie um elemento canvas para o gráfico
+        const canvasEstatisticas = document.createElement('canvas');
+        canvasEstatisticas.id = 'graficoEstatisticas';
 
-    // Adicione o canvas à seção de apostas
-    document.getElementById('apostasCorrida').appendChild(canvasEstatisticas);
+        // Adicione o canvas à seção de apostas
+        document.getElementById('apostasCorrida').appendChild(canvasEstatisticas);
 
-    // Renderize o gráfico no canvas
-    const ctxEstatisticas = document.getElementById('graficoEstatisticas').getContext('2d');
-    new Chart(ctxEstatisticas, configEstatisticas);
+        // Renderize o gráfico no canvas
+        const ctxEstatisticas = document.getElementById('graficoEstatisticas').getContext('2d');
+        const graficoEstatisticas = new Chart(ctxEstatisticas, configEstatisticas);
+
+        // Faça uma requisição AJAX para obter os dados das apostas do PHP
+        fetch('apostas_get.php')
+            .then(response => response.json())
+            .then(data => {
+                // Use os dados recebidos para configurar o gráfico
+                const pilotos = data.map(aposta => aposta.piloto);
+                const numApostas = data.map(aposta => aposta.num_apostas);
+
+                // Atualize os dados do gráfico com os dados das apostas
+                graficoEstatisticas.data.labels = pilotos;
+                graficoEstatisticas.data.datasets[0].data = numApostas;
+
+                // Atualize o gráfico
+                graficoEstatisticas.update();
+            })
+            .catch(error => console.error('Erro:', error));
+    });
 </script>
+
 
 
     <footer>

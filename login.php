@@ -4,9 +4,9 @@ session_start();
 // Função para conectar ao banco de dados (substitua pelas suas informações)
 function conectarAoBanco() {
     $servername = "localhost"; // Nome do servidor MySQL
-    $username = "Wagner"; // Nome de usuário do banco de dados
-    $password = "123"; // Senha do banco de dados
-    $database = "pap"; // Nome do banco de dados
+    $username = "root"; // Nome de usuário do banco de dados
+    $password = "root"; // Senha do banco de dados
+    $database = "wagnerpap"; // Nome do banco de dados
 
     $conn = new mysqli($servername, $username, $password, $database);
 

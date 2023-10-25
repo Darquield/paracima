@@ -7,25 +7,9 @@
     <title>Login</title>
 </head>
 <body>
-    <header>
-        <div id="logo">
-            <img src="./image/PK_white.png" alt="" width="100">
-
-           
-        </div>
-        <div id="menu">
-            <nav>
-                <ul class="nav-list">
-                    <li >
-                        <a href="index.html">Página Inicial</a>
-                    </li>
-                    <li class="first current_page_item">
-                        <a href="login.html">Login</a>
-                    </li>
-                   
-                </ul>
-            </nav>
-    </header>
+<?php
+include("header.php")
+?>
     
     <div class="login-box">
         <p>Login</p>
