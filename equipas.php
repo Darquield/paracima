@@ -12,6 +12,9 @@ include("headerafterlogin.php")
 ?>
 
     <main>
+    <form action="add_equipa_premio.php">
+    <button type="submit">Ver Premios das Equipas</button>
+</form>
         
     <section id="equipe-mercedes" style="text-align: center;">
             <h2>Equipe Mercedes</h2>

@@ -13,6 +13,9 @@ include("headerafterlogin.php")
 ?>
 
     <main>
+    <form action="add_piloto_premio.php">
+    <button type="submit">Ver Premios </button>
+</form>
         <!-- Conteúdo sobre pilotos da Fórmula 1 aqui -->
    
         <section id="Atuais Pilotos de 2023"  style="font-size: 34px;" >
