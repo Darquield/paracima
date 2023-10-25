@@ -3,9 +3,13 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="style.w.css">
+    <link rel="stylesheet" href="style.css.l.css">
+    
     <title>Registro</title>
 </head>
+<?php
+include("header.php")
+?>
 <body>
     <div class="login-box"> <!-- Aplicando a classe login-box ao elemento principal -->
         <form action="registro.php" method="POST">
